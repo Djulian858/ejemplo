@@ -39,14 +39,14 @@ Categorias
          <td>{{$categoria->status}}</td>
          
             <td >
-                <a href="{{route('categoria.show',[$categoria->id])}}">
+                <a href="{{route('categoria.show',$categoria)}}">
                    <img src="img/view.png" alt=""> 
                 </a>
 
              
                       
                  
-                   <a href="{{route('categoria.edit',[$categoria->id])}}">
+                   <a href="{{route('categoria.edit',$categoria)}}">
                    <img src="img/edit.png" alt="">
                    </a>
                              

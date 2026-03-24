@@ -11,7 +11,7 @@ Route::get('/hola', function () {
     return 'hola';
 });
 
-Route::resource('/categoria',CategoriaController::class);
+Route::resource('/categoria',CategoriaController::class)->parameters(["categoria"=>"categoria"]);
 
 Route::get('hola/{nombre}/{apellido}', function ($nombre, $apellido) {
     return "hola $nombre $apellido";

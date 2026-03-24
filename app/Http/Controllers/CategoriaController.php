@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use App\Http\Requests\CategoriaRequest;
 
 class CategoriaController extends Controller
 {
@@ -29,23 +30,13 @@ class CategoriaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoriaRequest $request)
     {
         //vamos a validar el formulario
-        $datosValidos=$request->validate(
-            ['nombre' => 'required|max:100|unique:categorias,nombre',
-            'descripcion' => 'required|',
-            'status'=>'required|boolean'
-            
-            ],['nombre.required'=>'El campo nombre es obligatorio',
-            'nombre.max'=>'El campo nombre no puede tener mas de 100 caracteres',
-            'nombre.unique'=>'El campo nombre ya existe',
-            'descripcion.required'=>'El campo descripcion es obligatorio',
-            'status.required'=>'El campo estatus es obligatorio',
-
-            ]);
+        $datosValidos=$request->validated();
 
             $categoia=Categoria::create($datosValidos);
+
             return redirect()->route("categoria.index")->with("success","Categoria agregada correctamente");
     }
 
@@ -63,14 +54,19 @@ class CategoriaController extends Controller
     public function edit(Categoria $categoria)
     {
         //
+        //$categoria=Categoria::findOrFail($id);
+        return view("categoria.edit", ["categoria"=>$categoria]);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categoria $categoria)
+    public function update(CategoriaRequest $request, Categoria $categoria)
     {
         //
+        $categoria->update($request->validated());
+        return redirect()->route("categoria.index")->with("success","Categoria actualizada correctamente");
     }
 
     /**
