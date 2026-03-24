@@ -75,5 +75,15 @@ class CategoriaController extends Controller
     public function destroy(Categoria $categoria)
     {
         //
+        try{
+        $categoria->delete();
+         return redirect()->route("categoria.index")->with("success","Categoria eliminada correctamente");
+   
+         }catch(QueryException $e){
+        if($e->getCode()=="23000"){
+            return redirect()->back()->with("error","No se puede eliminar la categoria porque tiene productos relacionados");
+        }
+        return redirect()->back()->with("error","Error inesperado");
+    }
     }
 }
