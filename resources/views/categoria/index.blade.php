@@ -6,6 +6,13 @@ Categorias
 
 @section("contenido")
 
+{{-- realimentacion del usuario --}}
+@if (session('error'))
+    <div>
+        {{ session('error') }}
+    </div>
+@endif
+
 <section class="container-tabla">
     <h2 class="titulo-tabla"> Categorias</h2>
 

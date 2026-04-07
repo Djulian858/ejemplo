@@ -16,7 +16,11 @@ Productos
             <li class="nav-item">
                 <a href="{{route('producto.create')}}" class="nav-link btn-agregar">Agregar Producto</a>
             </li>
+
             
+            <li class="nav-item">
+                <a href="{{route('pdf.productos')}}" class="nav-link btn-pdf">Generar PDF</a>
+            </li>
 
         </ul>
     </nav>
@@ -82,8 +86,12 @@ Productos
           
        </tbody>
    </table>
+   {{-- resultados de paginacion --}}
+   <div class="nav-botones">
+        {{ $productos->links('vendor.pagination.default') }}
     
     </div>
+</div>
 </section>
 @endsection
 
