@@ -7,18 +7,50 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Routing\Controller;
  
 class ProductoController extends Controller
 {
+    
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+public function __construct()
     {
-        //
-        $productos = Producto::orderBy('id', 'desc')->paginate(1);
-        return view('producto.index', compact('productos'));
- 
+        $this->middleware('can:producto.create')->only(['create', 'store']);
+        $this->middleware('can:producto.index')->only(['index']);
+        $this->middleware('can:producto.destroy')->only(['destroy']);
+        $this->middleware('can:producto.update')->only(['edit', 'update']);
+    }
+
+
+    public function index(Request $request)
+    {
+        $categorias = Categoria::all();
+
+        // preparar la consulta
+        $query = Producto::query();
+
+        // filtro por categoria
+        if ($request->filled('categoria')) {
+            $query->where('id_categoria', $request->categoria);
+        }
+
+        // filtro por stock
+        if ($request->stock == 'con') {
+            $query->where('stock', '>', 0);
+        } elseif ($request->stock == 'sin') {
+            $query->where('stock', '<=', 0);
+        }
+
+        // filtro por nombre
+        if ($request->filled('buscar')) {
+            $query->where('nombre', 'like', '%' . $request->buscar . '%');
+        }
+
+        $productos = $query->orderBy('id', 'desc')->paginate(1);
+        return view('producto.index', compact('productos', 'categorias'));
     }
  
     /**
